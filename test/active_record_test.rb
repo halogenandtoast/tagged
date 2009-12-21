@@ -19,7 +19,7 @@ class ActiveRecordTest < Test::Unit::TestCase
     end
     
     should "respond to tagged instance methods" do
-      [:tag, :tags].each do |method|
+      [:tag, :tag_list, :untag].each do |method|
         assert @post.respond_to?(method)
       end
     end
@@ -29,7 +29,18 @@ class ActiveRecordTest < Test::Unit::TestCase
     end
     
     should "have no tags to begin with" do
-      assert_equal [], @post.tags
+      assert_equal [], @post.tag_list
+    end
+    
+    should "be able to add a tag" do
+      @post.tag('foo')
+      assert_equal ['foo'], @post.tag_list
+    end
+    
+    should "be able to remove a tag" do
+      @post.tag('foo')
+      @post.untag('foo')
+      assert_equal [], @post.tag_list
     end
     
   end

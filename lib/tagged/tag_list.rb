@@ -1,21 +1,22 @@
 module Tagged
-  class TagList
+  class TagList < Array
     attr_accessor :tags, :delimiter
-    def initialize(delimiter)
-      self.delimiter = delimiter
-      @tags = []
+    def initialize(*list)
+      self.delimiter = ','
+      if list[0].is_a?(Array)
+        self.delimiter = list[1]
+        list = list[0]
+      end
+      list = list.is_a?(Array) ? list : list.split(self.delimiter).collect(&:strip).reject(&:blank)
+      super(list)
     end
     
-    def <<(list)
-      @tags += list
-    end
-    
-    def remove(item)
-      @tags.delete(item)
+    def +(list)
+      Tagged::TagList.new(self.to_a + list, self.delimiter)
     end
     
     def to_s(delimiter = nil)
-      @tags.join(delimiter || self.delimiter)
+      join(delimiter || self.delimiter)
     end
   end
 end

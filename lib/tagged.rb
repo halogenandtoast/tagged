@@ -28,28 +28,24 @@ module Tagged
       self.class.delimiter
     end
     
-    def tags
-      _tag_list.tags
+    def tag_list
+      self._tag_list
     end
     
-    def tags=(list)
-      _tag_list.tags = list.split(delimiter).map(&:strip)
+    def tag_list=(list)
+      self._tag_list = Tagged::TagList.new(list.split(delimiter).map(&:strip))
     end
     
     def tag(list)
-      _tag_list << list.split(delimiter).map(&:strip)
+      list.split(delimiter).map {|tag| self._tag_list << tag.strip }
     end
     
     def untag(items)
-      items.split(delimiter).map{|tag| _tag_list.remove(tag.strip)}
+      items.split(delimiter).map{|tag| self._tag_list.delete(tag.strip)}
     end
-    
-    def tag_list(format = nil)
-      @tag_list.to_s(format)
-    end
-    
+        
     def _tag_list
-      @tag_list ||= Tagged::TagList.new(delimiter)
+      @tag_list ||= Tagged::TagList.new([], delimiter)
     end
   end
 end

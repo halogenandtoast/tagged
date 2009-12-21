@@ -1,17 +1,11 @@
+require 'tagged'
+
 module Tagged
   
   module MongoMapperExtension
     def self.included(base)
       base.class_eval do
-        class << self
-          alias_method :extended_original, :extended
-          def extended(model)
-            model.class_eval do
-              model.send(:include, Tagged::Extension)
-              many :tags, :as => :taggable
-            end
-          end
-        end
+        include Tagged::Base
       end
     end
   end
@@ -20,7 +14,16 @@ module Tagged
   end
 end
 
-MongoMapper::Document.send(:include, Tagged::MongoMapperExtension)
+module MongoMapper
+  module Document
+    module ClassMethods
+      def tagged
+        include Tagged::MongoMapperExtension
+      end
+    end
+  end
+end
+
 Tagged::Tag.instance_eval do
   include MongoMapper::Document
   belongs_to :tagged, :polymorphic => true

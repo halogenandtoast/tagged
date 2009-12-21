@@ -24,6 +24,11 @@ CreateSchema.suppress_messages do
   CreateSchema.migrate(:up)
 end
  
+class Tagging < ActiveRecord::Base
+  belongs_to :tag
+  belongs_to :tagged, :polymorphic => true
+end
+
 class Post < ActiveRecord::Base
   tagged
 end

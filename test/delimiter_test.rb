@@ -13,11 +13,11 @@ class TaggingTest < Test::Unit::TestCase
     end
     
     should "respond with the correct tags" do
-      assert_equal ['hoge', 'fuga', 'piyo'], @bar.tags
+      assert_equal ['hoge', 'fuga', 'piyo'], @bar.tag_list
     end
     
     should "be able to represent the tags as a string" do
-      assert_equal "hoge|fuga|piyo", @bar.tag_list
+      assert_equal "hoge|fuga|piyo", @bar.tag_list.to_s
     end
     
   end
