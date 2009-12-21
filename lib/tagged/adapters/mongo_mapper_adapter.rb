@@ -5,6 +5,7 @@ module Tagged
   module MongoMapperExtension
     def self.included(base)
       base.class_eval do
+        @@tagged_adapter = MongoMapperAdapter.new
         include Tagged::Base
       end
     end
@@ -19,15 +20,13 @@ module MongoMapper
     module ClassMethods
       def tagged
         include Tagged::MongoMapperExtension
+        key :tags, Array
+        before_save :save_tags
       end
     end
+    
+    def save_tags
+      self.tags = self.tag_list
+    end
   end
-end
-
-Tagged::Tag.instance_eval do
-  include MongoMapper::Document
-  belongs_to :tagged, :polymorphic => true
-  key :tagged_type, String
-  key :tagged_id, ObjectId
-  key :name, String, :required => true
 end

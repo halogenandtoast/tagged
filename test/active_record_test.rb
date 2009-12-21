@@ -43,6 +43,13 @@ class ActiveRecordTest < Test::Unit::TestCase
       assert_equal [], @post.tag_list
     end
     
+    should "be able to save tags" do
+      @post.tag('foo,bar')
+      @post.save
+      assert_equal 2, Tag.count
+      assert_equal 2, Tagging.count
+    end
+    
   end
 end
 

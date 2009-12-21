@@ -32,3 +32,7 @@ end
 class Post < ActiveRecord::Base
   tagged
 end
+
+class Tag < ActiveRecord::Base
+  has_many :taggings, :dependent => :destroy
+end

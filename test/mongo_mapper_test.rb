@@ -39,6 +39,13 @@ class MongoMapperTest < Test::Unit::TestCase
       assert_equal [], @article.tag_list
     end
     
+    should "be able to save tags" do
+      @article.tag('foo,bar')
+      @article.save
+      @find_article = Article.find(@article.id)
+      assert_equal ['foo', 'bar'], @find_article.tags
+    end
+    
   end
 end
 
